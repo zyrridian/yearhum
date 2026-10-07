@@ -21,9 +21,18 @@ object WikiText {
         s = s.replace(Regex("\\[\\[([^\\]]*)\\]\\]")) { it.groupValues[1] }
         s = s.replace(Regex("\\[https?://[^\\s\\]]+\\s*([^\\]]*)\\]"), "$1")
         s = s.replace("'''", "").replace("''", "")
-        s = s.replace("&amp;", "&").replace("&nbsp;", " ").replace("&quot;", "\"").replace("&#39;", "'")
+        s =
+            s
+                .replace("&amp;", "&")
+                .replace("&nbsp;", " ")
+                .replace("&quot;", "\"")
+                .replace("&#39;", "'")
         s = s.replace("&ndash;", "–").replace("&mdash;", "—")
-        return s.replace(Regex("\\s+"), " ").trim().trim('"', '“', '”').trim()
+        return s
+            .replace(Regex("\\s+"), " ")
+            .trim()
+            .trim('"', '“', '”')
+            .trim()
     }
 
     private fun templateText(t: String): String {
@@ -38,22 +47,30 @@ object WikiText {
     /** Splits a wikitext table into rows of cell strings. */
     fun tableRows(wikitext: String): List<List<String>> {
         val body = wikitext.substringAfter("{|", wikitext)
-        return body.split(Regex("(?m)^\\|-.*$")).map { block ->
-            val cells = mutableListOf<String>()
-            for (line in block.lines()) {
-                val l = line.trim()
-                when {
-                    l.startsWith("|}") -> break
-                    l.startsWith("!") || (l.startsWith("|") && !l.startsWith("|+") && !l.startsWith("|-")) -> {
-                        val content = l.drop(1)
-                        val separator = if (l.startsWith("!")) "!!" else "||"
-                        content.split(separator).forEach { cells.add(stripAttributes(it)) }
+        return body
+            .split(Regex("(?m)^\\|-.*$"))
+            .map { block ->
+                val cells = mutableListOf<String>()
+                for (line in block.lines()) {
+                    val l = line.trim()
+                    when {
+                        l.startsWith("|}") -> {
+                            break
+                        }
+
+                        l.startsWith("!") || (l.startsWith("|") && !l.startsWith("|+") && !l.startsWith("|-")) -> {
+                            val content = l.drop(1)
+                            val separator = if (l.startsWith("!")) "!!" else "||"
+                            content.split(separator).forEach { cells.add(stripAttributes(it)) }
+                        }
+
+                        cells.isNotEmpty() && l.isNotEmpty() -> {
+                            cells[cells.lastIndex] = cells.last() + " " + l
+                        }
                     }
-                    cells.isNotEmpty() && l.isNotEmpty() -> cells[cells.lastIndex] = cells.last() + " " + l
                 }
-            }
-            cells
-        }.filter { it.isNotEmpty() }
+                cells
+            }.filter { it.isNotEmpty() }
     }
 
     /** `scope="row" | text` or `style="x"| text` → `text` (but keep `[[a|b]]` links intact). */
@@ -66,26 +83,33 @@ object WikiText {
 }
 
 /** Fetches wikitext through the MediaWiki API (cached). */
-class WikipediaClient(private val http: CachedHttp) {
+class WikipediaClient(
+    private val http: CachedHttp,
+) {
     fun wikitext(title: String): String? {
-        val url = "https://en.wikipedia.org/w/api.php?action=parse&page=${title.replace(' ', '_').urlEncode()}" +
-            "&prop=wikitext&format=json&formatversion=2&redirects=1"
+        val url =
+            "https://en.wikipedia.org/w/api.php?action=parse&page=${title.replace(' ', '_').urlEncode()}" +
+                "&prop=wikitext&format=json&formatversion=2&redirects=1"
         val body = http.get(url) ?: return null
         val obj: JsonObject = Json.parseToJsonElement(body).jsonObject
         val parse = obj["parse"]?.jsonObject ?: return null // page missing → API error object
         return parse["wikitext"]?.jsonPrimitive?.content
     }
 
-    fun yearEndSongs(year: Int, limit: Int): List<RawEntry> {
+    fun yearEndSongs(
+        year: Int,
+        limit: Int,
+    ): List<RawEntry> {
         val text = wikitext("Billboard Year-End Hot 100 singles of $year") ?: return emptyList()
         return parseYearEndSongs(year, text).take(limit)
     }
 
     fun numberOneAlbums(year: Int): List<RawEntry> {
-        val candidates = listOf(
-            "List of Billboard 200 number-one albums of $year",
-            "List of Billboard number-one albums of $year",
-        )
+        val candidates =
+            listOf(
+                "List of Billboard 200 number-one albums of $year",
+                "List of Billboard number-one albums of $year",
+            )
         for (title in candidates) {
             val text = wikitext(title) ?: continue
             val entries = parseNumberOneAlbums(year, text)
@@ -95,20 +119,28 @@ class WikipediaClient(private val http: CachedHttp) {
     }
 
     companion object {
-        fun parseYearEndSongs(year: Int, wikitext: String): List<RawEntry> {
+        fun parseYearEndSongs(
+            year: Int,
+            wikitext: String,
+        ): List<RawEntry> {
             val seen = mutableSetOf<Int>()
-            return WikiText.tableRows(wikitext).mapNotNull { cells ->
-                if (cells.size < 3) return@mapNotNull null
-                val rank = WikiText.clean(cells[0]).toIntOrNull() ?: return@mapNotNull null
-                val title = WikiText.clean(cells[1])
-                val artist = WikiText.clean(cells[2])
-                if (title.isBlank() || artist.isBlank() || !seen.add(rank)) return@mapNotNull null
-                RawEntry(year, "SONG", rank, title, artist)
-            }.sortedBy { it.rank }
+            return WikiText
+                .tableRows(wikitext)
+                .mapNotNull { cells ->
+                    if (cells.size < 3) return@mapNotNull null
+                    val rank = WikiText.clean(cells[0]).toIntOrNull() ?: return@mapNotNull null
+                    val title = WikiText.clean(cells[1])
+                    val artist = WikiText.clean(cells[2])
+                    if (title.isBlank() || artist.isBlank() || !seen.add(rank)) return@mapNotNull null
+                    RawEntry(year, "SONG", rank, title, artist)
+                }.sortedBy { it.rank }
         }
 
         /** Albums are italicised links; the artist is the cell after the album cell. */
-        fun parseNumberOneAlbums(year: Int, wikitext: String): List<RawEntry> {
+        fun parseNumberOneAlbums(
+            year: Int,
+            wikitext: String,
+        ): List<RawEntry> {
             val seen = mutableSetOf<String>()
             val result = mutableListOf<RawEntry>()
             for (cells in WikiText.tableRows(wikitext)) {

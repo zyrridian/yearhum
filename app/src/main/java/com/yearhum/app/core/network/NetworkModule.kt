@@ -44,21 +44,19 @@ val AppJson =
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideHttpClient(): HttpClient =
-        HttpClient(OkHttp) {
-            install(UserAgent) { agent = USER_AGENT }
-            install(ContentNegotiation) { json(AppJson) }
-            install(HttpTimeout) {
-                requestTimeoutMillis = 15_000
-                connectTimeoutMillis = 10_000
-            }
+    fun provideHttpClient(): HttpClient = HttpClient(OkHttp) {
+        install(UserAgent) { agent = USER_AGENT }
+        install(ContentNegotiation) { json(AppJson) }
+        install(HttpTimeout) {
+            requestTimeoutMillis = 15_000
+            connectTimeoutMillis = 10_000
         }
+    }
 
     @Provides
     @Singleton
     @MusicBrainzClient
-    fun provideMusicBrainzClient(base: HttpClient): HttpClient =
-        base.config {
-            install(RateLimitPlugin) { limiter = RateLimiter(MUSICBRAINZ_MIN_INTERVAL_MS) }
-        }
+    fun provideMusicBrainzClient(base: HttpClient): HttpClient = base.config {
+        install(RateLimitPlugin) { limiter = RateLimiter(MUSICBRAINZ_MIN_INTERVAL_MS) }
+    }
 }

@@ -68,11 +68,13 @@ fun TimelineRoute(
         Box(
             Modifier
                 .padding(padding)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             when (val state = years) {
                 UiState.Loading -> LoadingState()
+
                 UiState.Error -> ErrorState(onRetry = null)
+
                 is UiState.Content -> if (state.data.isEmpty()) {
                     EmptyState(stringResource(R.string.home_empty))
                 } else {
@@ -88,7 +90,7 @@ private fun YearPager(
     years: List<Int>,
     startYear: Int,
     viewModel: TimelineViewModel,
-    onItemClick: (Long) -> Unit
+    onItemClick: (Long) -> Unit,
 ) {
     val initial = years.indexOf(startYear).takeIf { it >= 0 } ?: years.lastIndex
     val pagerState = rememberPagerState(initialPage = initial) { years.size }
@@ -109,11 +111,13 @@ fun YearPage(
     year: Int,
     state: UiState<YearCapsule?>,
     onItemClick: (Long) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     when (state) {
         UiState.Loading -> LoadingState(modifier)
+
         UiState.Error -> ErrorState(onRetry = null, modifier = modifier)
+
         is UiState.Content -> {
             val capsule = state.data
             if (capsule == null) {
@@ -129,7 +133,7 @@ fun YearPage(
 private fun CapsuleContent(
     capsule: YearCapsule,
     onItemClick: (Long) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier.fillMaxSize(), contentPadding = PaddingValues(vertical = 16.dp)) {
         item {
@@ -143,13 +147,13 @@ private fun CapsuleContent(
             R.string.section_songs,
             capsule.items(Category.SONG),
             onItemClick,
-            showWhenEmpty = true
+            showWhenEmpty = true,
         )
         section(
             R.string.section_albums,
             capsule.items(Category.ALBUM),
             onItemClick,
-            showWhenEmpty = true
+            showWhenEmpty = true,
         )
         section(R.string.section_games, capsule.items(Category.GAME), onItemClick)
         section(R.string.section_movies, capsule.items(Category.MOVIE), onItemClick)
@@ -197,10 +201,11 @@ fun ItemCard(item: CapsuleItem, onClick: () -> Unit, modifier: Modifier = Modifi
             stringResource(R.string.item_rank_title_artist, item.rank, item.title, item.subtitle)
 
         ranked -> stringResource(R.string.item_rank_title, item.rank, item.title)
+
         item.subtitle != null -> stringResource(
             R.string.item_title_subtitle,
             item.title,
-            item.subtitle
+            item.subtitle,
         )
 
         else -> item.title

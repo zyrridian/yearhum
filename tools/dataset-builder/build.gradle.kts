@@ -4,7 +4,6 @@ plugins {
     application
 }
 
-
 application {
     mainClass.set("builder.MainKt")
 }

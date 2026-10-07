@@ -17,11 +17,16 @@ fun String.urlEncode(): String = URLEncoder.encode(this, Charsets.UTF_8)
  * Polite HTTP client: identifies itself, spaces requests per host, retries on 429/503,
  * and caches every successful response on disk so reruns are free and resumable.
  */
-class CachedHttp(private val cacheDir: File, private val minIntervalMs: Map<String, Long>) {
-    private val client = HttpClient.newBuilder()
-        .followRedirects(HttpClient.Redirect.NORMAL)
-        .connectTimeout(Duration.ofSeconds(15))
-        .build()
+class CachedHttp(
+    private val cacheDir: File,
+    private val minIntervalMs: Map<String, Long>,
+) {
+    private val client =
+        HttpClient
+            .newBuilder()
+            .followRedirects(HttpClient.Redirect.NORMAL)
+            .connectTimeout(Duration.ofSeconds(15))
+            .build()
     private val lastCall = mutableMapOf<String, Long>()
 
     init {
@@ -34,26 +39,36 @@ class CachedHttp(private val cacheDir: File, private val minIntervalMs: Map<Stri
         if (file.exists()) return file.readText().takeIf { it != NOT_FOUND }
         repeat(MAX_ATTEMPTS) { attempt ->
             throttle(URI(url).host)
-            val request = HttpRequest.newBuilder(URI(url))
-                .header("User-Agent", USER_AGENT)
-                .header("Accept", "application/json")
-                .timeout(Duration.ofSeconds(30))
-                .GET()
-                .build()
-            val response = try {
-                client.send(request, HttpResponse.BodyHandlers.ofString())
-            } catch (e: Exception) {
-                System.err.println("  network error (${e.message}), retrying")
-                Thread.sleep(BACKOFF_MS * (attempt + 1))
-                return@repeat
-            }
+            val request =
+                HttpRequest
+                    .newBuilder(URI(url))
+                    .header("User-Agent", USER_AGENT)
+                    .header("Accept", "application/json")
+                    .timeout(Duration.ofSeconds(30))
+                    .GET()
+                    .build()
+            val response =
+                try {
+                    client.send(request, HttpResponse.BodyHandlers.ofString())
+                } catch (e: Exception) {
+                    System.err.println("  network error (${e.message}), retrying")
+                    Thread.sleep(BACKOFF_MS * (attempt + 1))
+                    return@repeat
+                }
             when (response.statusCode()) {
-                200 -> return response.body().also { file.writeText(it) }
+                200 -> {
+                    return response.body().also { file.writeText(it) }
+                }
+
                 404 -> {
                     file.writeText(NOT_FOUND)
                     return null
                 }
-                429, 503 -> Thread.sleep(BACKOFF_MS * (attempt + 1))
+
+                429, 503 -> {
+                    Thread.sleep(BACKOFF_MS * (attempt + 1))
+                }
+
                 else -> {
                     System.err.println("HTTP ${response.statusCode()} for $url")
                     return null
@@ -71,8 +86,11 @@ class CachedHttp(private val cacheDir: File, private val minIntervalMs: Map<Stri
         lastCall[host] = System.currentTimeMillis()
     }
 
-    private fun sha(s: String) = MessageDigest.getInstance("SHA-256").digest(s.toByteArray())
-        .joinToString("") { "%02x".format(it) }.take(HASH_LENGTH)
+    private fun sha(s: String) = MessageDigest
+        .getInstance("SHA-256")
+        .digest(s.toByteArray())
+        .joinToString("") { "%02x".format(it) }
+        .take(HASH_LENGTH)
 
     private companion object {
         const val NOT_FOUND = "__404__"

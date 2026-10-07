@@ -15,7 +15,6 @@ sealed interface UiState<out T> {
     data object Error : UiState<Nothing>
 }
 
-fun <T> Flow<T>.asUiState(): Flow<UiState<T>> =
-    map<T, UiState<T>> { UiState.Content(it) }
-        .onStart { emit(UiState.Loading) }
-        .catch { emit(UiState.Error) }
+fun <T> Flow<T>.asUiState(): Flow<UiState<T>> = map<T, UiState<T>> { UiState.Content(it) }
+    .onStart { emit(UiState.Loading) }
+    .catch { emit(UiState.Error) }

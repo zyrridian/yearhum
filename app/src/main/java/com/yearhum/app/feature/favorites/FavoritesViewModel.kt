@@ -15,18 +15,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel
-    @Inject
-    constructor(
-        private val favorites: FavoritesRepository,
-    ) : ViewModel() {
-        val state: StateFlow<UiState<List<CapsuleItem>>> =
-            favorites
-                .observeFavorites()
-                .asUiState()
-                .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UiState.Loading)
+@Inject
+constructor(
+    private val favorites: FavoritesRepository,
+) : ViewModel() {
+    val state: StateFlow<UiState<List<CapsuleItem>>> =
+        favorites
+            .observeFavorites()
+            .asUiState()
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UiState.Loading)
 
-        /** Toggling an item that is currently listed removes it. */
-        fun remove(itemId: Long) {
-            viewModelScope.launch { favorites.toggle(itemId) }
-        }
+    /** Toggling an item that is currently listed removes it. */
+    fun remove(itemId: Long) {
+        viewModelScope.launch { favorites.toggle(itemId) }
     }
+}

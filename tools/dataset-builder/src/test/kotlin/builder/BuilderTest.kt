@@ -5,7 +5,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class BuilderTest {
-    private val songsWikitext = """
+    private val songsWikitext =
+        """
         {| class="wikitable sortable" style="text-align: center"
         |-
         ! scope="col" | №
@@ -19,7 +20,7 @@ class BuilderTest {
         ! scope="row" | 3
         | "[[Fergalicious]]"<ref>x</ref> || [[Fergie (singer)|Fergie]]
         |}
-    """.trimIndent()
+        """.trimIndent()
 
     @Test fun parsesSongRows() {
         val rows = WikipediaClient.parseYearEndSongs(2007, songsWikitext)
@@ -36,7 +37,8 @@ class BuilderTest {
     }
 
     @Test fun parsesAlbums() {
-        val text = """
+        val text =
+            """
             {| class="wikitable"
             |-
             | rowspan="2" | 1
@@ -49,7 +51,7 @@ class BuilderTest {
             |-
             | 3 || February 3 || ''[[Dedication 2]]'' || [[Lil Wayne]]
             |}
-        """.trimIndent()
+            """.trimIndent()
         val albums = WikipediaClient.parseNumberOneAlbums(2007, text)
         assertEquals(listOf("Back to Black", "Dedication 2"), albums.map { it.title })
         assertEquals(listOf(1, 2), albums.map { it.rank })
@@ -67,27 +69,29 @@ class BuilderTest {
     }
 
     @Test fun overridesParse() {
-        val map = Overrides.parse(
-            """
-            # comment
-            "2007|SONG|Umbrella|Rihanna": 0c1d2e3f-0000-4000-8000-000000000000
-            "1999|SONG|X|Y": skip
-            """.trimIndent(),
-        )
+        val map =
+            Overrides.parse(
+                """
+                # comment
+                "2007|SONG|Umbrella|Rihanna": 0c1d2e3f-0000-4000-8000-000000000000
+                "1999|SONG|X|Y": skip
+                """.trimIndent(),
+            )
         assertEquals(2, map.size)
         assertEquals("skip", map["1999|SONG|X|Y"])
     }
 
     @Test fun validatorFlagsProblems() {
         val good = "0c1d2e3f-0000-4000-8000-000000000000"
-        val capsule = BuiltCapsule(
-            2007,
-            "h",
-            listOf(
-                BuiltItem(2007, "SONG", 1, "a", "b", good),
-                BuiltItem(2007, "SONG", 1, "c", "d", "not-a-uuid"),
-            ),
-        )
+        val capsule =
+            BuiltCapsule(
+                2007,
+                "h",
+                listOf(
+                    BuiltItem(2007, "SONG", 1, "a", "b", good),
+                    BuiltItem(2007, "SONG", 1, "c", "d", "not-a-uuid"),
+                ),
+            )
         val problems = Validator.validate(listOf(capsule), minSongs = 3)
         assertEquals(3, problems.size)
     }

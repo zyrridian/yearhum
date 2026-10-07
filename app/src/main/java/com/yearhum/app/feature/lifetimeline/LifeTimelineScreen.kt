@@ -71,11 +71,13 @@ fun LifeTimelineRoute(
         Box(
             Modifier
                 .padding(padding)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             when (val current = state) {
                 LifeTimelineUiState.Loading -> LoadingState()
+
                 LifeTimelineUiState.NeedsBirthYear -> NeedsBirthYear { editing = true }
+
                 is LifeTimelineUiState.Content -> if (current.milestones.isEmpty()) {
                     EmptyState(stringResource(R.string.life_empty, current.birthYear))
                 } else {
@@ -109,7 +111,7 @@ private fun NeedsBirthYear(onEnter: () -> Unit) {
     ) {
         Text(
             stringResource(R.string.life_needs_birth_year),
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
         Button(onClick = onEnter, modifier = Modifier.padding(top = 12.dp)) {
             Text(stringResource(R.string.life_enter_birth_year))
@@ -164,7 +166,9 @@ private fun MilestoneCard(
             }
             when (state) {
                 UiState.Loading -> LoadingState(Modifier.height(96.dp))
+
                 UiState.Error -> ErrorState(onRetry = null, modifier = Modifier.height(96.dp))
+
                 is UiState.Content -> state.data?.let { capsule ->
                     Text(
                         capsule.headline,
@@ -180,7 +184,8 @@ private fun MilestoneCard(
                             items(highlights, key = { it.id }) {
                                 ItemCard(
                                     it,
-                                    onClick = { onItemClick(it.id) })
+                                    onClick = { onItemClick(it.id) },
+                                )
                             }
                         }
                     }
@@ -188,7 +193,7 @@ private fun MilestoneCard(
             }
             TextButton(
                 onClick = { onOpenYear(milestone.year) },
-                modifier = Modifier.padding(horizontal = 8.dp)
+                modifier = Modifier.padding(horizontal = 8.dp),
             ) {
                 Text(stringResource(R.string.life_open_year, milestone.year))
             }

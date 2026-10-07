@@ -36,31 +36,31 @@ sealed interface LifeTimelineUiState {
 
 @HiltViewModel
 class LifeTimelineViewModel
-    @Inject
-    constructor(
-        private val repository: YearRepository,
-        private val settings: SettingsRepository,
-        buildTimeline: BuildLifeTimelineUseCase,
-        time: TimeProvider,
-    ) : ViewModel() {
-        private val currentYear =
-            Instant.ofEpochMilli(time.nowMillis()).atZone(ZoneId.systemDefault()).year
+@Inject
+constructor(
+    private val repository: YearRepository,
+    private val settings: SettingsRepository,
+    buildTimeline: BuildLifeTimelineUseCase,
+    time: TimeProvider,
+) : ViewModel() {
+    private val currentYear =
+        Instant.ofEpochMilli(time.nowMillis()).atZone(ZoneId.systemDefault()).year
 
-        val state: StateFlow<LifeTimelineUiState> =
-            combine(
-                settings.settings.map { it.birthYear }.distinctUntilChanged(),
-                repository.observeYears(),
-            ) { birthYear, years ->
-                if (birthYear == null) {
-                    LifeTimelineUiState.NeedsBirthYear
-                } else {
-                    LifeTimelineUiState.Content(birthYear, buildTimeline(birthYear, years, currentYear))
-                }
-            }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), LifeTimelineUiState.Loading)
+    val state: StateFlow<LifeTimelineUiState> =
+        combine(
+            settings.settings.map { it.birthYear }.distinctUntilChanged(),
+            repository.observeYears(),
+        ) { birthYear, years ->
+            if (birthYear == null) {
+                LifeTimelineUiState.NeedsBirthYear
+            } else {
+                LifeTimelineUiState.Content(birthYear, buildTimeline(birthYear, years, currentYear))
+            }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), LifeTimelineUiState.Loading)
 
-        fun capsule(year: Int): Flow<UiState<YearCapsule?>> = repository.observeCapsule(year).asUiState()
+    fun capsule(year: Int): Flow<UiState<YearCapsule?>> = repository.observeCapsule(year).asUiState()
 
-        fun saveBirthYear(year: Int) {
-            viewModelScope.launch { settings.setBirthYear(year) }
-        }
+    fun saveBirthYear(year: Int) {
+        viewModelScope.launch { settings.setBirthYear(year) }
     }
+}

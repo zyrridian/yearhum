@@ -27,14 +27,13 @@ fun CapsuleItemEntity.toDomain(): CapsuleItem? {
 
 fun YearCapsuleEntity.toDomain(items: List<CapsuleItemEntity>) = YearCapsule(year, headline, summary, items.mapNotNull { it.toDomain() })
 
-fun ReleaseGroupDto.toEntity(fetchedAt: Long) =
-    ReleaseGroupCacheEntity(
-        mbid = id,
-        title = title,
-        artist = artistCredit.joinToString(" & ") { it.name },
-        firstReleaseDate = firstReleaseDate?.takeIf { it.isNotBlank() },
-        coverUrl = null,
-        fetchedAt = fetchedAt,
-    )
+fun ReleaseGroupDto.toEntity(fetchedAt: Long) = ReleaseGroupCacheEntity(
+    mbid = id,
+    title = title,
+    artist = artistCredit.joinToString(" & ") { it.name },
+    firstReleaseDate = firstReleaseDate?.takeIf { it.isNotBlank() },
+    coverUrl = null,
+    fetchedAt = fetchedAt,
+)
 
 fun ReleaseGroupCacheEntity.toDomain() = ReleaseGroupInfo(mbid, title, artist, firstReleaseDate)

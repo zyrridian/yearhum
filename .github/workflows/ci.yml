@@ -1,0 +1,63 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    name: Build & Publish Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Grant Execute Permission for Gradle Wrapper
+        run: chmod +x gradlew
+
+      - name: Run Spotless & Unit Tests
+        run: ./gradlew spotlessCheck test --stacktrace
+
+      - name: Build Dataset Database
+        run: ./gradlew :tools:dataset-builder:run --args="--from 1990 --to 2026 --skip-mb --out app/src/main/assets/databases/capsules.db"
+
+      - name: Build Android APKs
+        run: ./gradlew assembleDebug assembleRelease
+
+      - name: Prepare Release Artifacts
+        run: |
+          mkdir -p release-assets
+          cp app/build/outputs/apk/debug/app-debug.apk release-assets/Yearhum-debug.apk
+          if [ -f app/build/outputs/apk/release/app-release-unsigned.apk ]; then
+            cp app/build/outputs/apk/release/app-release-unsigned.apk release-assets/Yearhum-release-unsigned.apk
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v1.0.${{ github.run_number }}"
+          name: "Yearhum Release v1.0.${{ github.run_number }}"
+          body: |
+            Automated build from commit `${{ github.sha }}` on `main`.
+
+            ### Downloads:
+            - **Yearhum-debug.apk**: Ready-to-install build for Android.
+            - **Yearhum-release-unsigned.apk**: Release build (unsigned).
+          files: release-assets/*
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

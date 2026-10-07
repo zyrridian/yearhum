@@ -71,7 +71,7 @@ fun HomeScreen(
     Column(
         Modifier
             .fillMaxSize()
-            .safeDrawingPadding()
+            .safeDrawingPadding(),
     ) {
         Row(Modifier.padding(horizontal = 8.dp), horizontalArrangement = Arrangement.End) {
             TextButton(onClick = onOpenFavorites) { Text(stringResource(R.string.favorites_title)) }
@@ -80,7 +80,9 @@ fun HomeScreen(
         }
         when (state) {
             UiState.Loading -> LoadingState()
+
             UiState.Error -> ErrorState(onRetry = null)
+
             is UiState.Content ->
                 if (state.data.isEmpty()) {
                     EmptyState(stringResource(R.string.home_empty))
@@ -93,7 +95,7 @@ fun HomeScreen(
         BirthYearDialog(
             initialYear = null,
             onConfirm = onSaveBirthYear,
-            onDismiss = onSkipOnboarding
+            onDismiss = onSkipOnboarding,
         )
     }
 }
@@ -122,11 +124,11 @@ fun YearPicker(
         val yearLabel = stringResource(R.string.home_year_value, year)
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             FilledTonalIconButton(
                 onClick = { year = (year - 1).coerceAtLeast(min) },
-                enabled = year > min
+                enabled = year > min,
             ) {
                 Text("−", modifier = Modifier.semantics { contentDescription = "" })
             }
@@ -137,7 +139,7 @@ fun YearPicker(
             )
             FilledTonalIconButton(
                 onClick = { year = (year + 1).coerceAtMost(max) },
-                enabled = year < max
+                enabled = year < max,
             ) {
                 Text("+")
             }
@@ -147,7 +149,7 @@ fun YearPicker(
         }
         OutlinedButton(
             onClick = { onGoToYear(years.random()) },
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(top = 8.dp),
         ) {
             Text(stringResource(R.string.home_surprise))
         }

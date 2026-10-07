@@ -10,7 +10,9 @@ import java.io.File
 object Overrides {
     private val line = Regex("^\"(.+)\":\\s*([0-9a-fA-F-]{36}|skip)\\s*(#.*)?$")
 
-    fun parse(text: String): Map<String, String> = text.lines().map { it.trim() }
+    fun parse(text: String): Map<String, String> = text
+        .lines()
+        .map { it.trim() }
         .filter { it.isNotEmpty() && !it.startsWith("#") }
         .mapNotNull { l -> line.matchEntire(l)?.let { it.groupValues[1] to it.groupValues[2].lowercase() } }
         .toMap()

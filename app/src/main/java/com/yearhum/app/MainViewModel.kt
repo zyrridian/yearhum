@@ -13,11 +13,11 @@ import javax.inject.Inject
 /** Holds the theme-related settings for the whole app; null until DataStore has loaded (avoids a theme flash). */
 @HiltViewModel
 class MainViewModel
-    @Inject
-    constructor(
-        settings: SettingsRepository,
-    ) : ViewModel() {
-        val settings: StateFlow<UserSettings?> =
-            settings.settings
-                .stateIn(viewModelScope, SharingStarted.Eagerly, null)
-    }
+@Inject
+constructor(
+    settings: SettingsRepository,
+) : ViewModel() {
+    val settings: StateFlow<UserSettings?> =
+        settings.settings
+            .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+}

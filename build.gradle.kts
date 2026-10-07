@@ -13,11 +13,13 @@ plugins {
 
 spotless {
     kotlin {
-        target("app/src/**/*.kt", "tools/**/src/**/*.kt")
-        ktlint(libs.versions.ktlint.get())
+        target("app/src/**/*.kt", "tools/dataset-builder/src/**/*.kt")
+        ktlint(libs.versions.ktlint.get()).editorConfigOverride(
+            mapOf("ktlint_function_naming_ignore_when_annotated_with" to "Composable"),
+        )
     }
     kotlinGradle {
-        target("*.gradle.kts", "app/*.gradle.kts", "tools/**/*.gradle.kts")
+        target("*.gradle.kts", "app/*.gradle.kts", "tools/dataset-builder/*.gradle.kts")
         ktlint(libs.versions.ktlint.get())
     }
 }

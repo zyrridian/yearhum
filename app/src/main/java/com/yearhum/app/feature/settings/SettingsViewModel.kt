@@ -17,36 +17,35 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel
-    @Inject
-    constructor(
-        private val repository: SettingsRepository,
-    ) : ViewModel() {
-        val settings: StateFlow<UserSettings> =
-            repository.settings
-                .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UserSettings())
+@Inject
+constructor(
+    private val repository: SettingsRepository,
+) : ViewModel() {
+    val settings: StateFlow<UserSettings> =
+        repository.settings
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UserSettings())
 
-        private val cacheCleared = Channel<Unit>(Channel.BUFFERED)
+    private val cacheCleared = Channel<Unit>(Channel.BUFFERED)
 
-        /** Fires once each time the cache was cleared (drives a snackbar). */
-        val cacheClearedEvents: Flow<Unit> = cacheCleared.receiveAsFlow()
+    /** Fires once each time the cache was cleared (drives a snackbar). */
+    val cacheClearedEvents: Flow<Unit> = cacheCleared.receiveAsFlow()
 
-        fun setBirthYear(year: Int?) = launch { repository.setBirthYear(year) }
+    fun setBirthYear(year: Int?) = launch { repository.setBirthYear(year) }
 
-        fun setCountry(code: String?) = launch { repository.setPreferredCountry(code) }
+    fun setCountry(code: String?) = launch { repository.setPreferredCountry(code) }
 
-        fun setThemeMode(mode: ThemeMode) = launch { repository.setThemeMode(mode) }
+    fun setThemeMode(mode: ThemeMode) = launch { repository.setThemeMode(mode) }
 
-        fun setDynamicColor(enabled: Boolean) = launch { repository.setDynamicColor(enabled) }
+    fun setDynamicColor(enabled: Boolean) = launch { repository.setDynamicColor(enabled) }
 
-        fun setDecadeThemes(enabled: Boolean) = launch { repository.setDecadeThemes(enabled) }
+    fun setDecadeThemes(enabled: Boolean) = launch { repository.setDecadeThemes(enabled) }
 
-        fun clearCache() =
-            launch {
-                repository.clearCachedMetadata()
-                cacheCleared.send(Unit)
-            }
-
-        private fun launch(block: suspend () -> Unit) {
-            viewModelScope.launch { block() }
-        }
+    fun clearCache() = launch {
+        repository.clearCachedMetadata()
+        cacheCleared.send(Unit)
     }
+
+    private fun launch(block: suspend () -> Unit) {
+        viewModelScope.launch { block() }
+    }
+}

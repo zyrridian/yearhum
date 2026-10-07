@@ -28,7 +28,7 @@ private val Palettes = listOf(
         Color(0xFF2A9D8F),
         Color(0xFFF4C430),
         Color(0xFFFFF6E5),
-        Color(0xFF2B1D0E)
+        Color(0xFF2B1D0E),
     ),
     // 70s: burnt orange, olive, mustard
     DecadePalette(
@@ -37,7 +37,7 @@ private val Palettes = listOf(
         Color(0xFF7A8450),
         Color(0xFFD9A441),
         Color(0xFFF7EBD7),
-        Color(0xFF2A2116)
+        Color(0xFF2A2116),
     ),
     // 80s: neon magenta, cyan, yellow
     DecadePalette(
@@ -46,7 +46,7 @@ private val Palettes = listOf(
         Color(0xFF00E5FF),
         Color(0xFFFFE600),
         Color(0xFFFFF0FB),
-        Color(0xFF120B2E)
+        Color(0xFF120B2E),
     ),
     // 90s: grunge flannel red, moss, concrete
     DecadePalette(
@@ -55,7 +55,7 @@ private val Palettes = listOf(
         Color(0xFF6B7B5A),
         Color(0xFF9A8F7A),
         Color(0xFFE9E6DF),
-        Color(0xFF1B1D1C)
+        Color(0xFF1B1D1C),
     ),
     // 2000s: chrome blue and silver
     DecadePalette(
@@ -64,7 +64,7 @@ private val Palettes = listOf(
         Color(0xFF8FA3B8),
         Color(0xFF00B5AD),
         Color(0xFFF0F5FA),
-        Color(0xFF0F1721)
+        Color(0xFF0F1721),
     ),
     // 2010s: flat coral and teal
     DecadePalette(
@@ -73,16 +73,14 @@ private val Palettes = listOf(
         Color(0xFF1AA6B7),
         Color(0xFFFFB84D),
         Color(0xFFFFFBFA),
-        Color(0xFF161616)
+        Color(0xFF161616),
     ),
 )
 
 /** Null for years without a dedicated look (before 1960, and the 2020s which use the app's base theme). */
-fun decadePaletteFor(year: Int): DecadePalette? =
-    Palettes.firstOrNull { year in it.decade..it.decade + 9 }
+fun decadePaletteFor(year: Int): DecadePalette? = Palettes.firstOrNull { year in it.decade..it.decade + 9 }
 
-private fun onColor(background: Color) =
-    if (background.luminance() > 0.5f) Color.Black else Color.White
+private fun onColor(background: Color) = if (background.luminance() > 0.5f) Color.Black else Color.White
 
 fun DecadePalette.applyTo(base: ColorScheme, dark: Boolean): ColorScheme {
     val background = if (dark) darkBackground else lightBackground

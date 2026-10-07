@@ -50,45 +50,45 @@ sealed interface DetailUiState {
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel(assistedFactory = DetailViewModel.Factory::class)
 class DetailViewModel
-    @AssistedInject
-    constructor(
-        @Assisted private val itemId: Long,
-        yearRepository: YearRepository,
-        private val enrichment: EnrichmentRepository,
-        private val favorites: FavoritesRepository,
-    ) : ViewModel() {
-        @AssistedFactory
-        interface Factory {
-            fun create(itemId: Long): DetailViewModel
-        }
-
-        private val item = yearRepository.observeItem(itemId)
-
-        private fun enrichmentFor(item: CapsuleItem): Flow<EnrichmentState> {
-            val mbid = item.mbid ?: return flowOf(EnrichmentState.Unavailable)
-            return enrichment
-                .releaseGroup(mbid)
-                .map {
-                    when (it) {
-                        is AppResult.Success -> EnrichmentState.Loaded(it.value)
-                        is AppResult.Failure -> EnrichmentState.Unavailable
-                    }
-                }.onStart { emit(EnrichmentState.Loading) }
-        }
-
-        val state: StateFlow<DetailUiState> =
-            item
-                .flatMapLatest { current ->
-                    if (current == null) {
-                        flowOf(DetailUiState.NotFound)
-                    } else {
-                        combine(enrichmentFor(current), favorites.observeIsFavorite(itemId)) { extra, fav ->
-                            DetailUiState.Content(current, extra, fav)
-                        }
-                    }
-                }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), DetailUiState.Loading)
-
-        fun toggleFavorite() {
-            viewModelScope.launch { favorites.toggle(itemId) }
-        }
+@AssistedInject
+constructor(
+    @Assisted private val itemId: Long,
+    yearRepository: YearRepository,
+    private val enrichment: EnrichmentRepository,
+    private val favorites: FavoritesRepository,
+) : ViewModel() {
+    @AssistedFactory
+    interface Factory {
+        fun create(itemId: Long): DetailViewModel
     }
+
+    private val item = yearRepository.observeItem(itemId)
+
+    private fun enrichmentFor(item: CapsuleItem): Flow<EnrichmentState> {
+        val mbid = item.mbid ?: return flowOf(EnrichmentState.Unavailable)
+        return enrichment
+            .releaseGroup(mbid)
+            .map {
+                when (it) {
+                    is AppResult.Success -> EnrichmentState.Loaded(it.value)
+                    is AppResult.Failure -> EnrichmentState.Unavailable
+                }
+            }.onStart { emit(EnrichmentState.Loading) }
+    }
+
+    val state: StateFlow<DetailUiState> =
+        item
+            .flatMapLatest { current ->
+                if (current == null) {
+                    flowOf(DetailUiState.NotFound)
+                } else {
+                    combine(enrichmentFor(current), favorites.observeIsFavorite(itemId)) { extra, fav ->
+                        DetailUiState.Content(current, extra, fav)
+                    }
+                }
+            }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), DetailUiState.Loading)
+
+    fun toggleFavorite() {
+        viewModelScope.launch { favorites.toggle(itemId) }
+    }
+}

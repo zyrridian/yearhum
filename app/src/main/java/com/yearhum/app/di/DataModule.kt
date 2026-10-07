@@ -29,11 +29,10 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(
         @ApplicationContext context: Context,
-    ): AppDatabase =
-        Room
-            .databaseBuilder(context, AppDatabase::class.java, AppDatabase.NAME)
-            .createFromAsset(AppDatabase.ASSET_PATH)
-            .build()
+    ): AppDatabase = Room
+        .databaseBuilder(context, AppDatabase::class.java, AppDatabase.NAME)
+        .createFromAsset(AppDatabase.ASSET_PATH)
+        .build()
 
     @Provides
     fun provideCapsuleDao(db: AppDatabase) = db.capsuleDao()

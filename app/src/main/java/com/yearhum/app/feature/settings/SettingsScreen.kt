@@ -111,7 +111,7 @@ fun SettingsContent(
         SectionTitle(R.string.settings_country)
         Text(
             stringResource(R.string.settings_country_hint),
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             FilterChip(
@@ -144,7 +144,7 @@ fun SettingsContent(
         SectionTitle(R.string.settings_data)
         Text(
             stringResource(R.string.settings_cache_hint),
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
         Button(onClick = onClearCache) { Text(stringResource(R.string.settings_clear_cache)) }
     }
@@ -172,7 +172,7 @@ private fun SectionTitle(res: Int) {
     Text(
         stringResource(res),
         style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.primary,
     )
 }
 
@@ -182,7 +182,7 @@ private fun SwitchRow(labelRes: Int, checked: Boolean, onCheckedChange: (Boolean
         Text(
             stringResource(labelRes),
             Modifier.weight(1f),
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
         Switch(checked = checked, onCheckedChange = onCheckedChange)
     }

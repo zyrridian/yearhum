@@ -12,7 +12,11 @@ import java.sql.DriverManager
  * identity hash come straight from the exported Room schema JSON, so the two cannot drift.
  */
 object RoomAssetWriter {
-    fun write(schemaFile: File, out: File, capsules: List<BuiltCapsule>) {
+    fun write(
+        schemaFile: File,
+        out: File,
+        capsules: List<BuiltCapsule>,
+    ) {
         val db = Json.parseToJsonElement(schemaFile.readText()).jsonObject["database"]!!.jsonObject
         val version = db["version"]!!.jsonPrimitive.content.toInt()
         out.parentFile.mkdirs()
@@ -23,7 +27,11 @@ object RoomAssetWriter {
                     val table = entity["tableName"]!!.jsonPrimitive.content
                     st.execute(entity["createSql"]!!.jsonPrimitive.content.replace("\${TABLE_NAME}", table))
                     entity["indices"]?.jsonArray?.forEach {
-                        st.execute(it.jsonObject["createSql"]!!.jsonPrimitive.content.replace("\${TABLE_NAME}", table))
+                        st.execute(
+                            it.jsonObject["createSql"]!!
+                                .jsonPrimitive.content
+                                .replace("\${TABLE_NAME}", table),
+                        )
                     }
                 }
                 db["setupQueries"]!!.jsonArray.forEach { st.execute(it.jsonPrimitive.content) }
@@ -38,20 +46,21 @@ object RoomAssetWriter {
                 }
                 ps.executeBatch()
             }
-            conn.prepareStatement(
-                "INSERT INTO capsule_item(year, category, rank, title, subtitle, mbid) VALUES (?, ?, ?, ?, ?, ?)",
-            ).use { ps ->
-                capsules.flatMap { it.items }.forEach {
-                    ps.setInt(1, it.year)
-                    ps.setString(2, it.category)
-                    ps.setInt(3, it.rank)
-                    ps.setString(4, it.title)
-                    ps.setString(5, it.subtitle)
-                    ps.setString(6, it.mbid)
-                    ps.addBatch()
+            conn
+                .prepareStatement(
+                    "INSERT INTO capsule_item(year, category, rank, title, subtitle, mbid) VALUES (?, ?, ?, ?, ?, ?)",
+                ).use { ps ->
+                    capsules.flatMap { it.items }.forEach {
+                        ps.setInt(1, it.year)
+                        ps.setString(2, it.category)
+                        ps.setInt(3, it.rank)
+                        ps.setString(4, it.title)
+                        ps.setString(5, it.subtitle)
+                        ps.setString(6, it.mbid)
+                        ps.addBatch()
+                    }
+                    ps.executeBatch()
                 }
-                ps.executeBatch()
-            }
             conn.commit()
         }
     }

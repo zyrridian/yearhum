@@ -15,16 +15,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TimelineViewModel
-    @Inject
-    constructor(
-        private val repository: YearRepository,
-    ) : ViewModel() {
-        val years: StateFlow<UiState<List<Int>>> =
-            repository
-                .observeYears()
-                .asUiState()
-                .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UiState.Loading)
+@Inject
+constructor(
+    private val repository: YearRepository,
+) : ViewModel() {
+    val years: StateFlow<UiState<List<Int>>> =
+        repository
+            .observeYears()
+            .asUiState()
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UiState.Loading)
 
-        /** Content is null when the year is not in the shipped dataset. */
-        fun capsule(year: Int): Flow<UiState<YearCapsule?>> = repository.observeCapsule(year).asUiState()
-    }
+    /** Content is null when the year is not in the shipped dataset. */
+    fun capsule(year: Int): Flow<UiState<YearCapsule?>> = repository.observeCapsule(year).asUiState()
+}

@@ -27,8 +27,7 @@ sealed interface AppResult<out T> {
     ) : AppResult<Nothing>
 }
 
-inline fun <T, R> AppResult<T>.map(transform: (T) -> R): AppResult<R> =
-    when (this) {
-        is AppResult.Success -> AppResult.Success(transform(value))
-        is AppResult.Failure -> this
-    }
+inline fun <T, R> AppResult<T>.map(transform: (T) -> R): AppResult<R> = when (this) {
+    is AppResult.Success -> AppResult.Success(transform(value))
+    is AppResult.Failure -> this
+}

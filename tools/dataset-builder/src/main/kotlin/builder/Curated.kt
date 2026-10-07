@@ -7,7 +7,9 @@ package builder
 object Curated {
     val CATEGORIES = setOf("GAME", "MOVIE", "TV", "EVENT")
 
-    fun parse(text: String): List<BuiltItem> = text.lines().map { it.trim() }
+    fun parse(text: String): List<BuiltItem> = text
+        .lines()
+        .map { it.trim() }
         .filter { it.isNotEmpty() && !it.startsWith("#") }
         .mapIndexed { index, line ->
             val parts = line.split("|").map { it.trim() }
@@ -24,8 +26,9 @@ object Curated {
         }
 
     fun load(): Map<Int, List<BuiltItem>> {
-        val stream = Curated::class.java.getResourceAsStream("/curated.tsv")
-            ?: error("curated.tsv is missing from the dataset-builder resources")
+        val stream =
+            Curated::class.java.getResourceAsStream("/curated.tsv")
+                ?: error("curated.tsv is missing from the dataset-builder resources")
         return parse(stream.bufferedReader(Charsets.UTF_8).use { it.readText() }).groupBy { it.year }
     }
 }

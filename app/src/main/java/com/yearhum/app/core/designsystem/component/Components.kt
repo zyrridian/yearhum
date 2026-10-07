@@ -35,7 +35,8 @@ fun EmptyState(message: String, modifier: Modifier = Modifier) {
     Box(
         modifier
             .fillMaxSize()
-            .padding(24.dp), contentAlignment = Alignment.Center
+            .padding(24.dp),
+        contentAlignment = Alignment.Center,
     ) {
         Text(message, style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
     }
@@ -83,9 +84,11 @@ fun ArtworkImage(url: String?, title: String, modifier: Modifier = Modifier) {
     val shape = RoundedCornerShape(12.dp)
     if (url == null) {
         Placeholder(
-            title, modifier
+            title,
+            modifier
                 .clip(shape)
-                .semantics { contentDescription = description })
+                .semantics { contentDescription = description },
+        )
     } else {
         SubcomposeAsyncImage(
             model = url,

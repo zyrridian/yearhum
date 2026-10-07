@@ -47,8 +47,7 @@ import kotlinx.coroutines.launch
 
 /** Links only: we never embed or stream audio. */
 object StreamingLinks {
-    private fun query(item: CapsuleItem) =
-        Uri.encode(listOfNotNull(item.subtitle, item.title).joinToString(" "))
+    private fun query(item: CapsuleItem) = Uri.encode(listOfNotNull(item.subtitle, item.title).joinToString(" "))
 
     fun youtube(item: CapsuleItem) = "https://www.youtube.com/results?search_query=${query(item)}"
 
@@ -56,11 +55,9 @@ object StreamingLinks {
 
     fun spotify(item: CapsuleItem) = "https://open.spotify.com/search/${query(item)}"
 
-    fun trailer(item: CapsuleItem) =
-        "https://www.youtube.com/results?search_query=${Uri.encode("${item.title} ${item.year} trailer")}"
+    fun trailer(item: CapsuleItem) = "https://www.youtube.com/results?search_query=${Uri.encode("${item.title} ${item.year} trailer")}"
 
-    fun wikipedia(item: CapsuleItem) =
-        "https://en.wikipedia.org/w/index.php?search=${Uri.encode(item.title)}"
+    fun wikipedia(item: CapsuleItem) = "https://en.wikipedia.org/w/index.php?search=${Uri.encode(item.title)}"
 }
 
 @Composable
@@ -88,7 +85,7 @@ fun DetailScreen(state: DetailUiState, onBack: () -> Unit, onToggleFavorite: () 
         Box(
             Modifier
                 .padding(padding)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             when (state) {
                 DetailUiState.Loading -> LoadingState()
@@ -104,7 +101,7 @@ fun DetailScreen(state: DetailUiState, onBack: () -> Unit, onToggleFavorite: () 
 private fun DetailContent(
     state: DetailUiState.Content,
     onToggleFavorite: () -> Unit,
-    snackbar: SnackbarHostState
+    snackbar: SnackbarHostState,
 ) {
     val item = state.item
     val uriHandler = LocalUriHandler.current
@@ -114,7 +111,7 @@ private fun DetailContent(
         runCatching { uriHandler.openUri(url) }.onFailure {
             scope.launch {
                 snackbar.showSnackbar(
-                    failedMessage
+                    failedMessage,
                 )
             }
         }
@@ -142,7 +139,9 @@ private fun DetailContent(
             Text(stringResource(R.string.detail_year_end_rank, item.rank, item.year))
             when (val extra = state.enrichment) {
                 EnrichmentState.Loading -> Text(stringResource(R.string.detail_loading_details))
+
                 EnrichmentState.Unavailable -> Text(stringResource(R.string.detail_details_unavailable))
+
                 is EnrichmentState.Loaded -> extra.info.firstReleaseDate?.let {
                     Text(stringResource(R.string.detail_first_released, it))
                 }
@@ -152,8 +151,8 @@ private fun DetailContent(
                 stringResource(
                     R.string.detail_category_in_year,
                     stringResource(item.category.labelRes()),
-                    item.year
-                )
+                    item.year,
+                ),
             )
         }
         FilterChip(
@@ -170,14 +169,16 @@ private fun DetailContent(
             if (item.category.isChartRanked) {
                 AssistChip(
                     onClick = { open(StreamingLinks.youtube(item)) },
-                    label = { Text(stringResource(R.string.link_youtube)) })
+                    label = { Text(stringResource(R.string.link_youtube)) },
+                )
                 AssistChip(
                     onClick = { open(StreamingLinks.youtubeMusic(item)) },
                     label = { Text(stringResource(R.string.link_youtube_music)) },
                 )
                 AssistChip(
                     onClick = { open(StreamingLinks.spotify(item)) },
-                    label = { Text(stringResource(R.string.link_spotify)) })
+                    label = { Text(stringResource(R.string.link_spotify)) },
+                )
             } else {
                 if (item.category in TRAILER_CATEGORIES) {
                     AssistChip(

@@ -17,8 +17,7 @@ import java.time.Year
 
 const val MIN_BIRTH_YEAR = 1900
 
-fun parseBirthYear(text: String, maxYear: Int = Year.now().value): Int? =
-    text.trim().toIntOrNull()?.takeIf { it in MIN_BIRTH_YEAR..maxYear }
+fun parseBirthYear(text: String, maxYear: Int = Year.now().value): Int? = text.trim().toIntOrNull()?.takeIf { it in MIN_BIRTH_YEAR..maxYear }
 
 /** Asks for a birth year. [onDismiss] is "skip"/"cancel"; the caller decides what that means. */
 @Composable
@@ -43,8 +42,8 @@ fun BirthYearDialog(
                         stringResource(
                             R.string.birth_year_hint,
                             MIN_BIRTH_YEAR,
-                            Year.now().value
-                        )
+                            Year.now().value,
+                        ),
                     )
                 },
                 isError = text.isNotEmpty() && parsed == null,

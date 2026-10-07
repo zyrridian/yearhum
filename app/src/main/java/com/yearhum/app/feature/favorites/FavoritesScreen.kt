@@ -42,7 +42,7 @@ import com.yearhum.app.domain.model.CapsuleItem
 fun FavoritesRoute(
     onBack: () -> Unit,
     onItemClick: (Long) -> Unit,
-    viewModel: FavoritesViewModel = hiltViewModel()
+    viewModel: FavoritesViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     Scaffold(
@@ -56,7 +56,7 @@ fun FavoritesRoute(
         Box(
             Modifier
                 .padding(padding)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             FavoritesContent(state, onItemClick, viewModel::remove)
         }
@@ -67,11 +67,13 @@ fun FavoritesRoute(
 fun FavoritesContent(
     state: UiState<List<CapsuleItem>>,
     onItemClick: (Long) -> Unit,
-    onRemove: (Long) -> Unit
+    onRemove: (Long) -> Unit,
 ) {
     when (state) {
         UiState.Loading -> LoadingState()
+
         UiState.Error -> ErrorState(onRetry = null)
+
         is UiState.Content -> if (state.data.isEmpty()) {
             EmptyState(stringResource(R.string.favorites_empty))
         } else {
@@ -80,7 +82,8 @@ fun FavoritesContent(
                     FavoriteRow(
                         item,
                         onClick = { onItemClick(item.id) },
-                        onRemove = { onRemove(item.id) })
+                        onRemove = { onRemove(item.id) },
+                    )
                     HorizontalDivider()
                 }
             }
@@ -103,13 +106,14 @@ private fun FavoriteRow(item: CapsuleItem, onClick: () -> Unit, onRemove: () -> 
         Column(
             Modifier
                 .weight(1f)
-                .semantics(mergeDescendants = true) { contentDescription = "" }) {
+                .semantics(mergeDescendants = true) { contentDescription = "" },
+        ) {
             Text(item.title, style = MaterialTheme.typography.titleMedium, maxLines = 2)
             item.subtitle?.let {
                 Text(
                     it,
                     style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1
+                    maxLines = 1,
                 )
             }
             Text("$category · ${item.year}", style = MaterialTheme.typography.labelMedium)

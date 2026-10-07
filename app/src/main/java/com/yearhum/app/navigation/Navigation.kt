@@ -69,7 +69,8 @@ fun AppNavDisplay() {
                         TimelineRoute(
                             key.startYear,
                             onBack = pop,
-                            onItemClick = { backStack.add(Detail(it)) })
+                            onItemClick = { backStack.add(Detail(it)) },
+                        )
                     }
                     entry<Detail> { key -> DetailRoute(key.itemId, onBack = pop) }
                     entry<About> { AboutScreen(onBack = pop) }
@@ -83,7 +84,8 @@ fun AppNavDisplay() {
                     entry<Favorites> {
                         FavoritesRoute(
                             onBack = pop,
-                            onItemClick = { backStack.add(Detail(it)) })
+                            onItemClick = { backStack.add(Detail(it)) },
+                        )
                     }
                     entry<Settings> { SettingsRoute(onBack = pop) }
                 },
