@@ -9,6 +9,16 @@ supplemented with lazy network enrichment for high-resolution artwork and releas
 
 ---
 
+## Screenshots
+
+<p align="center">
+  <img src="store/screenshots/1_home.png" width="30%" alt="Home Screen" />
+  <img src="store/screenshots/2_timeline.png" width="30%" alt="Timeline Screen" />
+  <img src="store/screenshots/3_detail.png" width="30%" alt="Detail Screen" />
+</p>
+
+---
+
 ## Architecture & Design Decisions
 
 Unidirectional data flow with Room as the single source of truth:
@@ -124,7 +134,8 @@ application asset directory.
 
 ### 4. Auto-Generating Screenshots
 
-Yearhum uses **Roborazzi** for fast JVM-based Jetpack Compose screenshot generation without needing an Android emulator.
+Yearhum uses **Roborazzi** for fast JVM-based Jetpack Compose screenshot generation without needing
+an Android emulator.
 
 To capture or update the app screenshots locally into `store/screenshots/`:
 
@@ -132,7 +143,8 @@ To capture or update the app screenshots locally into `store/screenshots/`:
 ./gradlew :app:recordRoborazziDebug
 ```
 
-The captured screenshots (`1_home.png`, `2_timeline.png`, `3_detail.png`) will be written to `store/screenshots/` and automatically synced to the storefront repository during CI/CD releases.
+The captured screenshots (`1_home.png`, `2_timeline.png`, `3_detail.png`) will be written to
+`store/screenshots/` and automatically synced to the storefront repository during CI/CD releases.
 
 > **Note:** When updating `capsules.db` during development, uninstall any existing debug build from
 > your test device (`adb uninstall com.yearhum.app`) or clear application storage so Room
