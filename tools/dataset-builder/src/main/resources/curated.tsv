@@ -1,0 +1,334 @@
+# Curated "what else was happening" items. Format: year|CATEGORY|rank|title|subtitle
+# CATEGORY is one of GAME, MOVIE, TV, EVENT (EVENT is shown as "Culture & moments" in the app).
+# subtitle = developer (GAME), director (MOVIE), network (TV) or date/context (EVENT).
+# Ranks are an editorial ordering within the year, not an official chart. Review before every release.
+1990|GAME|1|Super Mario World|Nintendo
+1990|GAME|2|Sid Meier's Railroad Tycoon|MicroProse
+1990|MOVIE|1|Ghost|Jerry Zucker
+1990|MOVIE|2|Home Alone|Chris Columbus
+1990|MOVIE|3|Pretty Woman|Garry Marshall
+1990|TV|1|Twin Peaks|ABC
+1990|TV|2|The Fresh Prince of Bel-Air|NBC
+1990|EVENT|1|German reunification|October 3
+1990|EVENT|2|Nelson Mandela released from prison|February 11
+1991|GAME|1|Sonic the Hedgehog|Sega
+1991|GAME|2|Street Fighter II|Capcom
+1991|MOVIE|1|Terminator 2: Judgment Day|James Cameron
+1991|MOVIE|2|Robin Hood: Prince of Thieves|Kevin Reynolds
+1991|MOVIE|3|Beauty and the Beast|Gary Trousdale & Kirk Wise
+1991|TV|1|Home Improvement|ABC
+1991|TV|2|Rugrats|Nickelodeon
+1991|EVENT|1|Dissolution of the Soviet Union|December 26
+1991|EVENT|2|The World Wide Web becomes publicly available|August
+1992|GAME|1|Mortal Kombat|Midway
+1992|GAME|2|Super Mario Kart|Nintendo
+1992|MOVIE|1|Aladdin|Ron Clements & John Musker
+1992|MOVIE|2|The Bodyguard|Mick Jackson
+1992|MOVIE|3|Home Alone 2: Lost in New York|Chris Columbus
+1992|TV|1|Batman: The Animated Series|Fox Kids
+1992|TV|2|The Real World|MTV
+1992|EVENT|1|Barcelona Summer Olympics|July 25 – August 9
+1992|EVENT|2|Maastricht Treaty signed|February 7
+1993|GAME|1|Doom|id Software
+1993|GAME|2|Myst|Cyan
+1993|MOVIE|1|Jurassic Park|Steven Spielberg
+1993|MOVIE|2|Mrs. Doubtfire|Chris Columbus
+1993|MOVIE|3|Schindler's List|Steven Spielberg
+1993|TV|1|The X-Files|Fox
+1993|TV|2|Mighty Morphin Power Rangers|Fox Kids
+1993|EVENT|1|European Union established|November 1
+1993|EVENT|2|Mosaic web browser released|Early 1993
+1994|GAME|1|Donkey Kong Country|Rare
+1994|GAME|2|Super Metroid|Nintendo
+1994|MOVIE|1|The Lion King|Roger Allers & Rob Minkoff
+1994|MOVIE|2|Forrest Gump|Robert Zemeckis
+1994|MOVIE|3|True Lies|James Cameron
+1994|TV|1|Friends|NBC
+1994|TV|2|ER|NBC
+1994|EVENT|1|Nelson Mandela becomes president of South Africa|May 10
+1994|EVENT|2|Channel Tunnel opens|May 6
+1995|GAME|1|Chrono Trigger|Square
+1995|GAME|2|Command & Conquer|Westwood Studios
+1995|MOVIE|1|Toy Story|John Lasseter
+1995|MOVIE|2|Batman Forever|Joel Schumacher
+1995|MOVIE|3|Braveheart|Mel Gibson
+1995|TV|1|Pride and Prejudice|BBC
+1995|TV|2|Neon Genesis Evangelion|TV Tokyo
+1995|EVENT|1|Windows 95 released|August 24
+1995|EVENT|2|Amazon opens its online store|July
+1996|GAME|1|Super Mario 64|Nintendo
+1996|GAME|2|Resident Evil|Capcom
+1996|MOVIE|1|Independence Day|Roland Emmerich
+1996|MOVIE|2|Twister|Jan de Bont
+1996|MOVIE|3|Mission: Impossible|Brian De Palma
+1996|TV|1|Dexter's Laboratory|Cartoon Network
+1996|TV|2|Sabrina, the Teenage Witch|ABC
+1996|EVENT|1|Dolly the sheep is born|July 5
+1996|EVENT|2|Atlanta Summer Olympics|July 19 – August 4
+1997|GAME|1|Final Fantasy VII|Square
+1997|GAME|2|Grand Theft Auto|DMA Design
+1997|MOVIE|1|Titanic|James Cameron
+1997|MOVIE|2|The Lost World: Jurassic Park|Steven Spielberg
+1997|MOVIE|3|Men in Black|Barry Sonnenfeld
+1997|TV|1|South Park|Comedy Central
+1997|TV|2|Buffy the Vampire Slayer|The WB
+1997|EVENT|1|Hong Kong handover to China|July 1
+1997|EVENT|2|Death of Diana, Princess of Wales|August 31
+1998|GAME|1|The Legend of Zelda: Ocarina of Time|Nintendo
+1998|GAME|2|Half-Life|Valve
+1998|GAME|3|Pokémon Red and Blue|Game Freak
+1998|MOVIE|1|Armageddon|Michael Bay
+1998|MOVIE|2|Saving Private Ryan|Steven Spielberg
+1998|MOVIE|3|The Truman Show|Peter Weir
+1998|TV|1|Sex and the City|HBO
+1998|TV|2|Dawson's Creek|The WB
+1998|TV|3|Cowboy Bebop|TV Tokyo
+1998|EVENT|1|Google founded|September 4
+1998|EVENT|2|Good Friday Agreement|April 10
+1999|GAME|1|Counter-Strike|Valve
+1999|GAME|2|EverQuest|Verant Interactive
+1999|MOVIE|1|Star Wars: Episode I – The Phantom Menace|George Lucas
+1999|MOVIE|2|The Sixth Sense|M. Night Shyamalan
+1999|MOVIE|3|The Matrix|The Wachowskis
+1999|TV|1|The Sopranos|HBO
+1999|TV|2|SpongeBob SquarePants|Nickelodeon
+1999|EVENT|1|The euro is introduced|January 1
+1999|EVENT|2|Napster launches|June
+2000|GAME|1|The Sims|Maxis
+2000|GAME|2|Diablo II|Blizzard North
+2000|MOVIE|1|Mission: Impossible 2|John Woo
+2000|MOVIE|2|Gladiator|Ridley Scott
+2000|MOVIE|3|Cast Away|Robert Zemeckis
+2000|TV|1|Survivor|CBS
+2000|TV|2|CSI: Crime Scene Investigation|CBS
+2000|EVENT|1|Sydney Summer Olympics|September 15 – October 1
+2000|EVENT|2|Draft of the human genome announced|June 26
+2001|GAME|1|Grand Theft Auto III|Rockstar North
+2001|GAME|2|Halo: Combat Evolved|Bungie
+2001|MOVIE|1|Harry Potter and the Philosopher's Stone|Chris Columbus
+2001|MOVIE|2|The Lord of the Rings: The Fellowship of the Ring|Peter Jackson
+2001|MOVIE|3|Shrek|Andrew Adamson & Vicky Jenson
+2001|TV|1|24|Fox
+2001|TV|2|Six Feet Under|HBO
+2001|EVENT|1|Wikipedia launches|January 15
+2001|EVENT|2|Apple introduces the iPod|October 23
+2002|GAME|1|Kingdom Hearts|Square
+2002|GAME|2|Metroid Prime|Retro Studios
+2002|MOVIE|1|The Lord of the Rings: The Two Towers|Peter Jackson
+2002|MOVIE|2|Spider-Man|Sam Raimi
+2002|MOVIE|3|Harry Potter and the Chamber of Secrets|Chris Columbus
+2002|TV|1|The Wire|HBO
+2002|TV|2|American Idol|Fox
+2002|EVENT|1|Euro notes and coins enter circulation|January 1
+2002|EVENT|2|FIFA World Cup in South Korea and Japan|May 31 – June 30
+2003|GAME|1|Call of Duty|Infinity Ward
+2003|GAME|2|Star Wars: Knights of the Old Republic|BioWare
+2003|MOVIE|1|The Lord of the Rings: The Return of the King|Peter Jackson
+2003|MOVIE|2|Finding Nemo|Andrew Stanton
+2003|MOVIE|3|Pirates of the Caribbean: The Curse of the Black Pearl|Gore Verbinski
+2003|TV|1|Arrested Development|Fox
+2003|TV|2|The O.C.|Fox
+2003|EVENT|1|Human Genome Project completed|April 14
+2003|EVENT|2|Space Shuttle Columbia disaster|February 1
+2004|GAME|1|World of Warcraft|Blizzard Entertainment
+2004|GAME|2|Half-Life 2|Valve
+2004|MOVIE|1|Shrek 2|Andrew Adamson, Kelly Asbury & Conrad Vernon
+2004|MOVIE|2|Harry Potter and the Prisoner of Azkaban|Alfonso Cuarón
+2004|MOVIE|3|Spider-Man 2|Sam Raimi
+2004|TV|1|Lost|ABC
+2004|TV|2|Deadwood|HBO
+2004|EVENT|1|Facebook launches|February 4
+2004|EVENT|2|Indian Ocean earthquake and tsunami|December 26
+2005|GAME|1|Resident Evil 4|Capcom
+2005|GAME|2|Guitar Hero|Harmonix
+2005|MOVIE|1|Harry Potter and the Goblet of Fire|Mike Newell
+2005|MOVIE|2|Star Wars: Episode III – Revenge of the Sith|George Lucas
+2005|MOVIE|3|The Chronicles of Narnia: The Lion, the Witch and the Wardrobe|Andrew Adamson
+2005|TV|1|Doctor Who|BBC
+2005|TV|2|Grey's Anatomy|ABC
+2005|EVENT|1|YouTube is founded|February 14
+2005|EVENT|2|Hurricane Katrina|August 29
+2006|GAME|1|Wii Sports|Nintendo
+2006|GAME|2|Gears of War|Epic Games
+2006|MOVIE|1|Pirates of the Caribbean: Dead Man's Chest|Gore Verbinski
+2006|MOVIE|2|Cars|John Lasseter
+2006|MOVIE|3|Casino Royale|Martin Campbell
+2006|TV|1|Dexter|Showtime
+2006|TV|2|Heroes|NBC
+2006|EVENT|1|Twitter launches|July 15
+2006|EVENT|2|Pluto reclassified as a dwarf planet|August 24
+2007|GAME|1|BioShock|2K Boston
+2007|GAME|2|Call of Duty 4: Modern Warfare|Infinity Ward
+2007|MOVIE|1|Pirates of the Caribbean: At World's End|Gore Verbinski
+2007|MOVIE|2|Harry Potter and the Order of the Phoenix|David Yates
+2007|MOVIE|3|Spider-Man 3|Sam Raimi
+2007|TV|1|Mad Men|AMC
+2007|TV|2|Gossip Girl|The CW
+2007|EVENT|1|The first iPhone is released|June 29
+2007|EVENT|2|Amazon launches the Kindle|November 19
+2008|GAME|1|Grand Theft Auto IV|Rockstar North
+2008|GAME|2|Fallout 3|Bethesda Game Studios
+2008|MOVIE|1|The Dark Knight|Christopher Nolan
+2008|MOVIE|2|Iron Man|Jon Favreau
+2008|MOVIE|3|WALL·E|Andrew Stanton
+2008|TV|1|Breaking Bad|AMC
+2008|TV|2|True Blood|HBO
+2008|EVENT|1|Beijing Summer Olympics|August 8 – 24
+2008|EVENT|2|Barack Obama elected US president|November 4
+2009|GAME|1|Call of Duty: Modern Warfare 2|Infinity Ward
+2009|GAME|2|Uncharted 2: Among Thieves|Naughty Dog
+2009|MOVIE|1|Avatar|James Cameron
+2009|MOVIE|2|Harry Potter and the Half-Blood Prince|David Yates
+2009|MOVIE|3|Up|Pete Docter
+2009|TV|1|Glee|Fox
+2009|TV|2|Modern Family|ABC
+2009|EVENT|1|Bitcoin network launches|January 3
+2009|EVENT|2|H1N1 influenza pandemic declared|June 11
+2010|GAME|1|Red Dead Redemption|Rockstar San Diego
+2010|GAME|2|Super Mario Galaxy 2|Nintendo
+2010|MOVIE|1|Toy Story 3|Lee Unkrich
+2010|MOVIE|2|Alice in Wonderland|Tim Burton
+2010|MOVIE|3|Inception|Christopher Nolan
+2010|TV|1|The Walking Dead|AMC
+2010|TV|2|Sherlock|BBC
+2010|EVENT|1|Haiti earthquake|January 12
+2010|EVENT|2|Instagram launches|October 6
+2011|GAME|1|The Elder Scrolls V: Skyrim|Bethesda Game Studios
+2011|GAME|2|Minecraft|Mojang
+2011|MOVIE|1|Harry Potter and the Deathly Hallows – Part 2|David Yates
+2011|MOVIE|2|Transformers: Dark of the Moon|Michael Bay
+2011|MOVIE|3|Pirates of the Caribbean: On Stranger Tides|Rob Marshall
+2011|TV|1|Game of Thrones|HBO
+2011|TV|2|Homeland|Showtime
+2011|EVENT|1|Death of Steve Jobs|October 5
+2011|EVENT|2|Tōhoku earthquake and tsunami|March 11
+2012|GAME|1|Journey|thatgamecompany
+2012|GAME|2|The Walking Dead|Telltale Games
+2012|MOVIE|1|The Avengers|Joss Whedon
+2012|MOVIE|2|Skyfall|Sam Mendes
+2012|MOVIE|3|The Dark Knight Rises|Christopher Nolan
+2012|TV|1|Girls|HBO
+2012|TV|2|Elementary|CBS
+2012|EVENT|1|London Summer Olympics|July 27 – August 12
+2012|EVENT|2|Discovery of a Higgs boson-like particle announced|July 4
+2013|GAME|1|Grand Theft Auto V|Rockstar North
+2013|GAME|2|The Last of Us|Naughty Dog
+2013|MOVIE|1|Frozen|Chris Buck & Jennifer Lee
+2013|MOVIE|2|Iron Man 3|Shane Black
+2013|MOVIE|3|Despicable Me 2|Pierre Coffin & Chris Renaud
+2013|TV|1|House of Cards|Netflix
+2013|TV|2|Orange Is the New Black|Netflix
+2013|TV|3|Rick and Morty|Adult Swim
+2013|EVENT|1|Pope Francis elected|March 13
+2013|EVENT|2|Edward Snowden reveals NSA surveillance programs|June
+2014|GAME|1|Mario Kart 8|Nintendo
+2014|GAME|2|Dragon Age: Inquisition|BioWare
+2014|MOVIE|1|Transformers: Age of Extinction|Michael Bay
+2014|MOVIE|2|Guardians of the Galaxy|James Gunn
+2014|MOVIE|3|Interstellar|Christopher Nolan
+2014|TV|1|True Detective|HBO
+2014|TV|2|BoJack Horseman|Netflix
+2014|EVENT|1|FIFA World Cup in Brazil|June 12 – July 13
+2014|EVENT|2|Philae lands on a comet|November 12
+2015|GAME|1|The Witcher 3: Wild Hunt|CD Projekt Red
+2015|GAME|2|Bloodborne|FromSoftware
+2015|MOVIE|1|Star Wars: The Force Awakens|J. J. Abrams
+2015|MOVIE|2|Jurassic World|Colin Trevorrow
+2015|MOVIE|3|Furious 7|James Wan
+2015|TV|1|Better Call Saul|AMC
+2015|TV|2|Narcos|Netflix
+2015|EVENT|1|Paris Agreement adopted|December 12
+2015|EVENT|2|New Horizons flies past Pluto|July 14
+2016|GAME|1|Overwatch|Blizzard Entertainment
+2016|GAME|2|Pokémon Go|Niantic
+2016|MOVIE|1|Captain America: Civil War|Anthony & Joe Russo
+2016|MOVIE|2|Rogue One: A Star Wars Story|Gareth Edwards
+2016|MOVIE|3|Finding Dory|Andrew Stanton
+2016|TV|1|Stranger Things|Netflix
+2016|TV|2|Westworld|HBO
+2016|EVENT|1|United Kingdom votes to leave the EU|June 23
+2016|EVENT|2|Rio de Janeiro Summer Olympics|August 5 – 21
+2017|GAME|1|The Legend of Zelda: Breath of the Wild|Nintendo
+2017|GAME|2|Super Mario Odyssey|Nintendo
+2017|GAME|3|PlayerUnknown's Battlegrounds|PUBG Corporation
+2017|MOVIE|1|Star Wars: The Last Jedi|Rian Johnson
+2017|MOVIE|2|Beauty and the Beast|Bill Condon
+2017|MOVIE|3|The Fate of the Furious|F. Gary Gray
+2017|TV|1|The Handmaid's Tale|Hulu
+2017|TV|2|13 Reasons Why|Netflix
+2017|EVENT|1|Total solar eclipse across the United States|August 21
+2017|EVENT|2|Nintendo Switch released|March 3
+2018|GAME|1|Red Dead Redemption 2|Rockstar Games
+2018|GAME|2|God of War|Santa Monica Studio
+2018|MOVIE|1|Avengers: Infinity War|Anthony & Joe Russo
+2018|MOVIE|2|Black Panther|Ryan Coogler
+2018|MOVIE|3|Jurassic World: Fallen Kingdom|J. A. Bayona
+2018|TV|1|Succession|HBO
+2018|TV|2|The Haunting of Hill House|Netflix
+2018|EVENT|1|FIFA World Cup in Russia|June 14 – July 15
+2018|EVENT|2|Thai cave rescue|July 2 – 10
+2019|GAME|1|Death Stranding|Kojima Productions
+2019|GAME|2|Apex Legends|Respawn Entertainment
+2019|MOVIE|1|Avengers: Endgame|Anthony & Joe Russo
+2019|MOVIE|2|The Lion King|Jon Favreau
+2019|MOVIE|3|Frozen II|Chris Buck & Jennifer Lee
+2019|TV|1|Chernobyl|HBO
+2019|TV|2|The Mandalorian|Disney+
+2019|EVENT|1|First image of a black hole released|April 10
+2019|EVENT|2|Notre-Dame de Paris fire|April 15
+2020|GAME|1|Animal Crossing: New Horizons|Nintendo
+2020|GAME|2|Among Us|InnerSloth
+2020|MOVIE|1|The Eight Hundred|Guan Hu
+2020|MOVIE|2|Demon Slayer: Mugen Train|Haruo Sotozaki
+2020|MOVIE|3|Bad Boys for Life|Adil El Arbi & Bilall Fallah
+2020|TV|1|Tiger King|Netflix
+2020|TV|2|The Queen's Gambit|Netflix
+2020|EVENT|1|COVID-19 declared a pandemic|March 11
+2020|EVENT|2|Tokyo Olympics postponed to 2021|March 24
+2021|GAME|1|It Takes Two|Hazelight Studios
+2021|GAME|2|Resident Evil Village|Capcom
+2021|MOVIE|1|Spider-Man: No Way Home|Jon Watts
+2021|MOVIE|2|Shang-Chi and the Legend of the Ten Rings|Destin Daniel Cretton
+2021|MOVIE|3|Dune|Denis Villeneuve
+2021|TV|1|Squid Game|Netflix
+2021|TV|2|Arcane|Netflix
+2021|EVENT|1|Tokyo Summer Olympics|July 23 – August 8
+2021|EVENT|2|Perseverance rover lands on Mars|February 18
+2022|GAME|1|Elden Ring|FromSoftware
+2022|GAME|2|God of War Ragnarök|Santa Monica Studio
+2022|MOVIE|1|Avatar: The Way of Water|James Cameron
+2022|MOVIE|2|Top Gun: Maverick|Joseph Kosinski
+2022|MOVIE|3|Jurassic World Dominion|Colin Trevorrow
+2022|TV|1|House of the Dragon|HBO
+2022|TV|2|Wednesday|Netflix
+2022|EVENT|1|Russia invades Ukraine|February 24
+2022|EVENT|2|ChatGPT released|November 30
+2023|GAME|1|Baldur's Gate 3|Larian Studios
+2023|GAME|2|The Legend of Zelda: Tears of the Kingdom|Nintendo
+2023|MOVIE|1|Barbie|Greta Gerwig
+2023|MOVIE|2|Oppenheimer|Christopher Nolan
+2023|MOVIE|3|The Super Mario Bros. Movie|Aaron Horvath & Michael Jelenic
+2023|TV|1|The Last of Us|HBO
+2023|TV|2|Beef|Netflix
+2023|EVENT|1|Coronation of King Charles III|May 6
+2023|EVENT|2|Chandrayaan-3 lands near the lunar south pole|August 23
+2024|GAME|1|Balatro|LocalThunk
+2024|GAME|2|Astro Bot|Team Asobi
+2024|MOVIE|1|Inside Out 2|Kelsey Mann
+2024|MOVIE|2|Deadpool & Wolverine|Shawn Levy
+2024|MOVIE|3|Moana 2|David G. Derrick Jr.
+2024|TV|1|Shōgun|FX
+2024|TV|2|Baby Reindeer|Netflix
+2024|EVENT|1|Paris Summer Olympics|July 26 – August 11
+2024|EVENT|2|Total solar eclipse across North America|April 8
+2025|GAME|1|Clair Obscur: Expedition 33|Sandfall Interactive
+2025|GAME|2|Hollow Knight: Silksong|Team Cherry
+2025|GAME|3|Kingdom Come: Deliverance II|Warhorse Studios
+2025|MOVIE|1|Ne Zha 2|Jiaozi
+2025|MOVIE|2|A Minecraft Movie|Jared Hess
+2025|MOVIE|3|Lilo & Stitch|Dean Fleischer Camp
+2025|TV|1|Adolescence|Netflix
+2025|TV|2|Severance|Apple TV+
+2025|TV|3|The White Lotus|HBO
+2025|EVENT|1|Pope Leo XIV elected|May 8
+2025|EVENT|2|Los Angeles wildfires|January

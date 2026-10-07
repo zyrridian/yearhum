@@ -1,0 +1,3 @@
+# Manual MBID fixes for items the resolver could not match (see build/review.tsv).
+#   "YEAR|CATEGORY|Title|Artist as listed on Wikipedia": <release-group MBID>
+#   "YEAR|CATEGORY|Title|Artist": skip      # drop the item from the dataset

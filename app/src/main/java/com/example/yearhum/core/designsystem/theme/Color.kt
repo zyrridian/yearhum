@@ -1,4 +1,4 @@
-package com.example.yearhum.ui.theme
+package com.example.yearhum.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

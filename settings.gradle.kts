@@ -24,4 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Yearhum"
 include(":app")
- 
+include(":tools:dataset-builder")
