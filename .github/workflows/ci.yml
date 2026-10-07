@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD & Store Release
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-release:
-    name: Build & Publish Release
+    name: Build, Release & Update Store
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -34,30 +34,80 @@ jobs:
       - name: Build Dataset Database
         run: ./gradlew :tools:dataset-builder:run --args="--from 1990 --to 2026 --skip-mb --out app/src/main/assets/databases/capsules.db"
 
-      - name: Build Android APKs
-        run: ./gradlew assembleDebug assembleRelease
+      - name: Auto-generate Screenshots with Roborazzi
+        run: ./gradlew :app:recordRoborazziDebug
 
-      - name: Prepare Release Artifacts
+      - name: Auto-Commit Generated Screenshots to Repository
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs: auto-generate latest screenshots [skip ci]"
+          file_pattern: store/screenshots/*.png
+
+      - name: Build Android APKs
+        run: ./gradlew assembleDebug assembleRelease -PversionCode=${{ github.run_number }} -PversionName="1.0.${{ github.run_number }}"
+
+      - name: Prepare Local Release Artifacts
         run: |
           mkdir -p release-assets
           cp app/build/outputs/apk/debug/app-debug.apk release-assets/Yearhum-debug.apk
           if [ -f app/build/outputs/apk/release/app-release-unsigned.apk ]; then
-            cp app/build/outputs/apk/release/app-release-unsigned.apk release-assets/Yearhum-release-unsigned.apk
+            cp app/build/outputs/apk/release/app-release-unsigned.apk release-assets/Yearhum-release.apk
+          else
+            cp app/build/outputs/apk/debug/app-debug.apk release-assets/Yearhum-release.apk
           fi
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "v1.0.${{ github.run_number }}"
-          name: "Yearhum Release v1.0.${{ github.run_number }}"
+          name: "Yearhum v1.0.${{ github.run_number }}"
+          generate_release_notes: true
           body: |
-            Automated build from commit `${{ github.sha }}` on `main`.
+            Automated build for Yearhum version `v1.0.${{ github.run_number }}`.
 
             ### Downloads:
             - **Yearhum-debug.apk**: Ready-to-install build for Android.
-            - **Yearhum-release-unsigned.apk**: Release build (unsigned).
+            - **Yearhum-release.apk**: Release build.
           files: release-assets/*
           draft: false
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout Public Store Repo
+        if: ${{ secrets.STORE_PAT != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: zyrridian/apps
+          token: ${{ secrets.STORE_PAT }}
+          path: storefront-repo
+
+      - name: Copy Files and Update Storefront
+        if: ${{ secrets.STORE_PAT != '' }}
+        run: |
+          mkdir -p storefront-repo/apps/yearhum/screenshots
+          
+          # Copy APK and store metadata
+          cp release-assets/Yearhum-release.apk storefront-repo/apps/yearhum/app-release.apk
+          cp store/icon.png storefront-repo/apps/yearhum/ || true
+          cp store/screenshots/* storefront-repo/apps/yearhum/screenshots/ || true
+          cp store/app.json storefront-repo/apps/yearhum/ || true
+
+          cd storefront-repo
+          if [ ! -f apps.json ]; then echo "[]" > apps.json; fi
+
+          # Update global apps.json registry using jq
+          jq --arg id "yearhum" \
+             --arg v "v1.0.${{ github.run_number }}" \
+             'map(select(.id != $id)) + [{"id": $id, "version": $v, "apkUrl": "./apps/yearhum/app-release.apk"}]' \
+             apps.json > temp.json && mv temp.json apps.json
+
+      - name: Push to Public Store
+        if: ${{ secrets.STORE_PAT != '' }}
+        run: |
+          cd storefront-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Auto-release: Yearhum v1.0.${{ github.run_number }}" || echo "No changes to commit"
+          git push

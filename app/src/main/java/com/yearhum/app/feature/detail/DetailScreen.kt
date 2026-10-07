@@ -98,7 +98,7 @@ fun DetailScreen(state: DetailUiState, onBack: () -> Unit, onToggleFavorite: () 
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun DetailContent(
+fun DetailContent(
     state: DetailUiState.Content,
     onToggleFavorite: () -> Unit,
     snackbar: SnackbarHostState,

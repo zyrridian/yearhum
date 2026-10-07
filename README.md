@@ -122,6 +122,18 @@ application asset directory.
 ./gradlew :app:assembleDebug
 ```
 
+### 4. Auto-Generating Screenshots
+
+Yearhum uses **Roborazzi** for fast JVM-based Jetpack Compose screenshot generation without needing an Android emulator.
+
+To capture or update the app screenshots locally into `store/screenshots/`:
+
+```bash
+./gradlew :app:recordRoborazziDebug
+```
+
+The captured screenshots (`1_home.png`, `2_timeline.png`, `3_detail.png`) will be written to `store/screenshots/` and automatically synced to the storefront repository during CI/CD releases.
+
 > **Note:** When updating `capsules.db` during development, uninstall any existing debug build from
 > your test device (`adb uninstall com.yearhum.app`) or clear application storage so Room
 > re-initializes from the updated asset database.
