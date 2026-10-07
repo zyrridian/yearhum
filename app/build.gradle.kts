@@ -9,13 +9,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.yearhum"
+    namespace = "com.yearhum.app"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.example.yearhum"
+        applicationId = "com.yearhum.app"
         minSdk = 26
         targetSdk = 37
         versionCode = 1
