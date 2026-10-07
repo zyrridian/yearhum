@@ -1,15 +1,44 @@
+# Gradle / Kotlin
+.gradle/
+.kotlin/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration and secrets
+local.properties
+*.jks
+*.keystore
+keystore.properties
+google-services.json
+
+# Android Studio / IntelliJ
 *.iml
-.gradle
-/local.properties
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
-.DS_Store
-/build
+/.idea/deploymentTargetSelector.xml
+/.idea/deploymentTargetDropDown.xml
+/.idea/other.xml
+/.idea/markdown.xml
 /captures
+
+# Native build
 .externalNativeBuild
 .cxx
-local.properties
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Dataset builder: raw HTTP cache is regenerable and large.
+# (build/ output such as review.tsv and capsules.json is covered by **/build/ above.)
+/tools/dataset-builder/.cache/
+
+# Intentionally NOT ignored (commit these):
+#   app/schemas/                         exported Room schemas, used by migration tests and the dataset builder
+#   app/src/main/assets/databases/       capsules.db, the shipped asset database
+#   tools/dataset-builder/overrides.yaml manual MBID overrides
+#   tools/dataset-builder/src/main/resources/curated.tsv
