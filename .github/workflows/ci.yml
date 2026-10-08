@@ -44,7 +44,7 @@ jobs:
       - name: Auto-generate Screenshots with Roborazzi
         run: ./gradlew :app:recordRoborazziDebug
 
-      - name: Auto-Commit Generated Screenshots to Repository
+      - name: Auto-commit Generated Screenshots
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "docs: auto-generate latest screenshots [skip ci]"
@@ -53,7 +53,7 @@ jobs:
       - name: Build Android APKs
         run: ./gradlew assembleDebug assembleRelease -PversionCode=${{ github.run_number }} -PversionName="${{ env.APP_VERSION }}"
 
-      - name: Prepare Local Release Artifacts
+      - name: Prepare Release Artifacts
         run: |
           mkdir -p release-assets
           cp app/build/outputs/apk/debug/app-debug.apk release-assets/Yearhum-debug.apk
@@ -82,7 +82,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Check out Public Store Repository
+      - name: Checkout Public Store Repository
         if: env.STORE_PAT != ''
         uses: actions/checkout@v4
         with:
@@ -102,19 +102,22 @@ jobs:
         env:
           RELEASE_URL: https://github.com/zyrridian/yearhum/releases/tag/v${{ env.APP_VERSION }}
         run: |
+          set -euo pipefail
+
           mkdir -p "apps/$APP_ID/screenshots"
 
-          cp ../release-assets/Yearhum-release.apk \
-            "apps/$APP_ID/app-release.apk"
+          # Copy the APK used by the storefront.
+          cp "../release-assets/Yearhum-release.apk" "apps/$APP_ID/app-release.apk"
 
-          if [ -f ../store/icon.png ]; then
-            cp ../store/icon.png "apps/$APP_ID/icon.png"
-          fi
+          # Copy the same standard Android launcher icon used by the app.
+          cp "../app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" "apps/$APP_ID/icon.webp"
 
+          # Copy generated screenshots if they exist.
           if compgen -G "../store/screenshots/*" > /dev/null; then
             cp ../store/screenshots/* "apps/$APP_ID/screenshots/"
           fi
 
+          # Build a JSON array containing screenshot filenames.
           SCREENSHOTS="$(
             find "apps/$APP_ID/screenshots" \
               -maxdepth 1 \
@@ -124,6 +127,7 @@ jobs:
               jq -R -s 'split("\n") | map(select(length > 0))'
           )"
 
+          # Create the source manifest.
           jq -n \
             --arg schema "v1" \
             --arg id "$APP_ID" \
@@ -133,6 +137,7 @@ jobs:
             --arg category "Entertainment" \
             --arg repository "https://github.com/zyrridian/yearhum" \
             --arg release "$RELEASE_URL" \
+            --arg icon "icon.webp" \
             --arg artifact "app-release.apk" \
             --argjson screenshots "$SCREENSHOTS" \
             '{
@@ -145,7 +150,7 @@ jobs:
               repository: $repository,
               release: $release,
               featured: true,
-              icon: "icon.png",
+              icon: $icon,
               artifacts: [
                 {
                   platform: "android",
@@ -160,13 +165,39 @@ jobs:
         if: env.STORE_PAT != ''
         working-directory: storefront-repo
         run: |
+          set -euo pipefail
+
           REGISTRY_GENERATED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             node scripts/generate-registry.mjs
+
+      - name: Verify Generated Registry
+        if: env.STORE_PAT != ''
+        working-directory: storefront-repo
+        run: |
+          set -euo pipefail
+
+          test -f "apps/$APP_ID/app-release.apk"
+          test -f "apps/$APP_ID/icon.webp"
+          test -f "apps/$APP_ID/manifest.json"
+          test -f "registry/apps.json"
+
+          jq -e '.apps[] | select(.id == "yearhum")' \
+            registry/apps.json > /dev/null
+
+          jq -e '
+            .apps[]
+            | select(.id == "yearhum")
+            | .artifacts[]
+            | select(.filename == "app-release.apk")
+            | (.sha256 | test("^[a-f0-9]{64}$"))
+          ' registry/apps.json > /dev/null
 
       - name: Commit and Push Store Update
         if: env.STORE_PAT != ''
         working-directory: storefront-repo
         run: |
+          set -euo pipefail
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
@@ -174,8 +205,12 @@ jobs:
             "apps/$APP_ID" \
             registry/apps.json
 
+          if git diff --cached --quiet; then
+            echo "No storefront changes to commit"
+            exit 0
+          fi
+
           git commit \
-            -m "Auto-release: Yearhum v$APP_VERSION" \
-            || echo "No changes to commit"
+            -m "Auto-release: Yearhum v$APP_VERSION"
 
           git push
