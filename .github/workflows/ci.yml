@@ -13,6 +13,8 @@ jobs:
       contents: write
     env:
       STORE_PAT: ${{ secrets.STORE_PAT }}
+      APP_ID: yearhum
+      APP_VERSION: 1.0.${{ github.run_number }}
 
     steps:
       - name: Checkout Repository
@@ -34,7 +36,10 @@ jobs:
         run: ./gradlew spotlessCheck test --stacktrace
 
       - name: Build Dataset Database
-        run: ./gradlew :tools:dataset-builder:run --args="--from 1990 --to 2026 --skip-mb --out app/src/main/assets/databases/capsules.db"
+        run: >
+          ./gradlew :tools:dataset-builder:run
+          --args="--from 1990 --to 2026 --skip-mb
+          --out app/src/main/assets/databases/capsules.db"
 
       - name: Auto-generate Screenshots with Roborazzi
         run: ./gradlew :app:recordRoborazziDebug
@@ -46,7 +51,7 @@ jobs:
           file_pattern: store/screenshots/*.png
 
       - name: Build Android APKs
-        run: ./gradlew assembleDebug assembleRelease -PversionCode=${{ github.run_number }} -PversionName="1.0.${{ github.run_number }}"
+        run: ./gradlew assembleDebug assembleRelease -PversionCode=${{ github.run_number }} -PversionName="${{ env.APP_VERSION }}"
 
       - name: Prepare Local Release Artifacts
         run: |
@@ -61,14 +66,15 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "v1.0.${{ github.run_number }}"
-          name: "Yearhum v1.0.${{ github.run_number }}"
+          tag_name: v${{ env.APP_VERSION }}
+          name: Yearhum v${{ env.APP_VERSION }}
           generate_release_notes: true
           body: |
-            Automated build for Yearhum version `v1.0.${{ github.run_number }}`.
+            Automated build for Yearhum version `${{ env.APP_VERSION }}`.
 
-            ### Downloads:
-            - **Yearhum-debug.apk**: Ready-to-install build for Android.
+            ### Downloads
+
+            - **Yearhum-debug.apk**: Debug build.
             - **Yearhum-release.apk**: Release build.
           files: release-assets/*
           draft: false
@@ -76,7 +82,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Checkout Public Store Repo
+      - name: Check out Public Store Repository
         if: env.STORE_PAT != ''
         uses: actions/checkout@v4
         with:
@@ -84,32 +90,92 @@ jobs:
           token: ${{ secrets.STORE_PAT }}
           path: storefront-repo
 
-      - name: Copy Files and Update Storefront
+      - name: Set up Node.js for Registry Generator
         if: env.STORE_PAT != ''
-        run: |
-          mkdir -p storefront-repo/apps/yearhum/screenshots
-          
-          # Copy APK and store metadata
-          cp release-assets/Yearhum-release.apk storefront-repo/apps/yearhum/app-release.apk
-          cp store/icon.png storefront-repo/apps/yearhum/ || true
-          cp store/screenshots/* storefront-repo/apps/yearhum/screenshots/ || true
-          cp store/app.json storefront-repo/apps/yearhum/ || true
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
-          cd storefront-repo
-          if [ ! -f apps.json ]; then echo "[]" > apps.json; fi
-
-          # Update global apps.json registry using jq
-          jq --arg id "yearhum" \
-             --arg v "v1.0.${{ github.run_number }}" \
-             'map(select(.id != $id)) + [{"id": $id, "version": $v, "apkUrl": "./apps/yearhum/app-release.apk"}]' \
-             apps.json > temp.json && mv temp.json apps.json
-
-      - name: Push to Public Store
+      - name: Copy Files and Create Registry Manifest
         if: env.STORE_PAT != ''
+        working-directory: storefront-repo
+        env:
+          RELEASE_URL: https://github.com/zyrridian/yearhum/releases/tag/v${{ env.APP_VERSION }}
         run: |
-          cd storefront-repo
+          mkdir -p "apps/$APP_ID/screenshots"
+
+          cp ../release-assets/Yearhum-release.apk \
+            "apps/$APP_ID/app-release.apk"
+
+          if [ -f ../store/icon.png ]; then
+            cp ../store/icon.png "apps/$APP_ID/icon.png"
+          fi
+
+          if compgen -G "../store/screenshots/*" > /dev/null; then
+            cp ../store/screenshots/* "apps/$APP_ID/screenshots/"
+          fi
+
+          SCREENSHOTS="$(
+            find "apps/$APP_ID/screenshots" \
+              -maxdepth 1 \
+              -type f \
+              -printf '%f\n' |
+              sort |
+              jq -R -s 'split("\n") | map(select(length > 0))'
+          )"
+
+          jq -n \
+            --arg schema "v1" \
+            --arg id "$APP_ID" \
+            --arg name "Yearhum" \
+            --arg version "$APP_VERSION" \
+            --arg description "Explore music, cinema, games, and cultural milestones from 1990 to 2025." \
+            --arg category "Entertainment" \
+            --arg repository "https://github.com/zyrridian/yearhum" \
+            --arg release "$RELEASE_URL" \
+            --arg artifact "app-release.apk" \
+            --argjson screenshots "$SCREENSHOTS" \
+            '{
+              schema: $schema,
+              id: $id,
+              name: $name,
+              version: $version,
+              description: $description,
+              category: $category,
+              repository: $repository,
+              release: $release,
+              featured: true,
+              icon: "icon.png",
+              artifacts: [
+                {
+                  platform: "android",
+                  type: "apk",
+                  filename: $artifact
+                }
+              ],
+              screenshots: $screenshots
+            }' > "apps/$APP_ID/manifest.json"
+
+      - name: Generate Normalized Registry
+        if: env.STORE_PAT != ''
+        working-directory: storefront-repo
+        run: |
+          REGISTRY_GENERATED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            node scripts/generate-registry.mjs
+
+      - name: Commit and Push Store Update
+        if: env.STORE_PAT != ''
+        working-directory: storefront-repo
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "Auto-release: Yearhum v1.0.${{ github.run_number }}" || echo "No changes to commit"
+
+          git add \
+            "apps/$APP_ID" \
+            registry/apps.json
+
+          git commit \
+            -m "Auto-release: Yearhum v$APP_VERSION" \
+            || echo "No changes to commit"
+
           git push
